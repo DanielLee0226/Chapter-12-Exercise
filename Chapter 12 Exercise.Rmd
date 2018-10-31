@@ -1,0 +1,25 @@
+---
+title: "Chapter 12 Exercise"
+output: html_notebook
+Name: Daniel Lee
+---
+
+### Problem 12.1 
+```{r}
+BabyNames %>%
+  group_by(sex, name) %>%
+  summarise(count = sum(count)) %>%
+  mutate(popularity = rank(desc(count))) %>%
+  filter(popularity <= 5)
+```
+
+### Problem 12.2
+```{r}
+
+```
+
+### Problem 12.3
+```{r}
+
+```
+
