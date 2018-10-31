@@ -72,16 +72,19 @@ lubridate::mdy("July 20, 1969") - lubridate::mdy("February 26, 1999")
 
 
 ### Problem 15.2
-a.
-b.
-c.
-d.
-e.
-f.
-g.
-h.
-i.
+a. Both work
+b. Both do not work
+c. Both do not work
+d. Both work
+e. Both do not work
+f. Both work
+g. Both work
+h. Both work
+i. Both work
 
+```{r}
+as.numeric(42.659,30)
+```
 
 ### Problem 15.3 
 ```{r}
