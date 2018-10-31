@@ -1,5 +1,5 @@
 ---
-title: "Chapter 12 Exercise"
+title: "Chapter 12 & 15 Exercise"
 output: html_notebook
 Name: Daniel Lee
 ---
@@ -16,10 +16,94 @@ BabyNames %>%
 ### Problem 12.2
 ```{r}
 
+PopularCounts <-
+  BabyNames %>%
+  group_by(year, name) %>%
+  summarise(total = sum(count)) %>%
+  mutate(ranking = ifelse(rank(desc(total)) <= 100, "Top_100", "Below")) %>%
+  group_by(year, ranking) %>%
+  summarise(total = sum(total))
+
+GlyphReady <-
+  PopularCounts %>%
+  spread(ranking, total) %>%
+  mutate(frac_in_top_100 = Top_100 / (Top_100 + Below))
+
+GlyphReady %>%
+  ggplot(aes(x=year, y=frac_in_top_100)) + 
+  geom_line() + 
+  ylim(0, NA)
 ```
 
 ### Problem 12.3
-```{r}
 
+a. Summary function
+b. neither a summary n or a transformation. It is a pair of values rather than a single value as required for a summary function
+c. Summary function
+d. transformation function
+e. transformation function 
+f. summary function
+g. transformation function
+h. summary function: an entire set of dates is being truned into a single number. 
+
+
+### Problem 15.1 
+1.
+```{r}
+lubridate::mdy("April 30, 1777") - lubridate::mdy("February 26, 1999")
 ```
+2. 
+```{r}
+lubridate::mdy("06-23-1912") - lubridate::mdy("02-26-1999")
+```
+
+3. 
+```{r}
+lubridate::dmy("3 March 1847") - lubridate::dmy("26-02-1999")
+```
+4. 
+```{r}
+lubridate::mdy_hm("11:00 am on Nov. 11th, 1918 at 11:00 am") - lubridate::mdy_hm("04:00 am on Feb. 26th, 1999 at 04:00 am")
+```
+5.
+```{r}
+lubridate::mdy("July 20, 1969") - lubridate::mdy("February 26, 1999")
+```
+
+
+### Problem 15.2
+a.
+b.
+c.
+d.
+e.
+f.
+g.
+h.
+i.
+
+
+### Problem 15.3 
+```{r}
+library(rvest)
+library(RCurl)
+web_page <-
+  "http://en.wikipedia.org/wiki/Mile_run_world_record_progression"
+
+SetOfTables <-
+  web_page %>%
+  rvest::html() %>%
+  readHTMLTable(stringsAsFactors=FALSE)
+
+T4 <- SetOfTables[[4]]
+
+T4 %>%
+  mutate(Date = gsub("\\[.\\]$", "", Date)), Time = lubridate::as.duration(ms(Time))/60, Date = dmy(Date)) %>%
+  ggplot(aes(x=Date, y=Time)) +
+  geom_point() + 
+  geom_text(aes(label=Athlete), size=3, angle=45, hjust=-0.1) + 
+  ylim(3.5,4.4) + ylab("Time (hours)") +
+  xlim(ymd("1910-01-01"), ymd("2021-01-01"))
+```
+
 
